@@ -1,11 +1,62 @@
 # Kế Hoạch Làm Việc Song Song (Zero-Dependency Parallel Plan)
 ## K4 Track 3A — Production Eval + Guardrail Stack
 
-> **Mục tiêu cốt lõi:** Phân chia thành **3 Track độc lập hoàn toàn** từ đầu đến cuối. Cả 3 thành viên bắt tay vào làm ngay cùng một lúc (từ phút thứ 0), không ai phải chờ ai, không sửa chung file, không xung đột Git (Merge Conflict-Free).
+> **Mục tiêu cốt lõi:** Phân chia thành **Giai đoạn chuẩn bị Pipeline (CP0)** và **3 Track độc lập hoàn toàn (Zero-Dependency)**. Cả 3 thành viên bắt tay vào làm song song từ phút 0, không ai phải chờ ai, không sửa chung file, không xung đột Git (Merge Conflict-Free).
+
+---
+
+## 0. Giai Đoạn Chuẩn Bị: Pipeline & Sinh 50 Answers Trước Lớp (CP0)
+
+*Giai đoạn này do **Thành viên 1 (Lead)** chịu trách nhiệm chính hoàn thành trước giờ làm lab (hoặc trong 15 phút đầu kiểm tra sẵn sàng). Thành viên 2 và 3 có thể đồng bộ môi trường hoặc code trước unit test.*
+
+### 0.1. Kiểm tra Môi Trường & Khởi Động Dịch Vụ
+Thực hiện lần lượt các lệnh sau trong virtualenv:
+```powershell
+# 1. Kiểm tra dependencies không bị xung đột
+.\.venv\Scripts\python.exe -m pip check
+
+# 2. Kiểm tra các thư viện cốt lõi import thành công
+.\.venv\Scripts\python.exe -c "import ragas, nemoguardrails, presidio_analyzer, spacy; print('imports OK')"
+
+# 3. Tải model ngôn ngữ spaCy
+.\.venv\Scripts\python.exe -m spacy download en_core_web_lg
+
+# 4. Khởi động vector DB Qdrant đã pin phiên bản (port 6333)
+docker compose -f infra/docker-compose.yml up -d
+```
+
+### 0.2. Chép Module m1–m5 & Kiểm Tra Hợp Đồng Giao Diện
+Chép 5 module từ bài lab trước vào thư mục `src/`:
+- `src/m1_chunking.py`, `src/m2_search.py`, `src/m3_rerank.py`, `src/m4_eval.py`, `src/m5_enrichment.py`.
+- **Lưu ý quan trọng về Pipeline:** Script `scripts/setup_answers.py` **tự lắp ráp m1, m2, m3, m5 và tự gọi generation**, hoàn toàn **không import hay gọi `src/pipeline.py`**.
+
+**Bảng đối chiếu hợp đồng giao diện m1–m5:**
+| Module | Trách nhiệm | Hợp đồng giao diện bắt buộc |
+|---|---|---|
+| **m1** (Chunking) | `load_documents`, `chunk_hierarchical` | Document có `text` và `metadata`. Child chunk phải giữ `parent_id`. |
+| **m2** (Search) | `HybridSearch.index`, `.search` | Kết quả search trả về list object có các thuộc tính: `.text`, `.score`, `.metadata`. |
+| **m3** (Rerank) | `CrossEncoderReranker.rerank` | Kết quả rerank cần thuộc tính `.text` cho các đoạn được chọn. |
+| **m5** (Enrichment) | `enrich_chunks` | Bắt buộc **giữ nguyên số lượng và thứ tự chunks** (tránh làm lệch metadata khi zip). |
+| **m4** (RAGAS Eval) | `evaluate_ragas` | Trả về dict có `per_question` theo đúng thứ tự và `metadata.evaluator_models` là list không rỗng các model IDs đã dùng (LLM/embeddings). |
+
+### 0.3. Sinh 50 Answers Bằng Pipeline Thật
+Chạy script sinh câu trả lời trước buổi học:
+```powershell
+.\.venv\Scripts\python.exe scripts/setup_answers.py --live
+```
+
+### 0.4. Tiêu Chuẩn Nghiệm Thu File `artifacts/answers_50q.json` (CP0 Checkpoint)
+- [ ] Đúng **50 ID** khớp hoàn toàn với `fixtures/test_set_50q.json`.
+- [ ] Đúng tỷ lệ phân bố: **20 factual**, **20 multi_hop**, **10 adversarial**.
+- [ ] Giữ nguyên gốc: `question`, `distribution`, `ground_truth`.
+- [ ] Tách biệt độc lập: `answer` (từ pipeline) và `contexts` (các đoạn đã lấy qua search/rerank). **Tuyệt đối không dùng `ground_truth` thay thế cho `answer`**, không xóa policy cũ trong corpus.
+- [ ] Có đầy đủ trường `generation_mode` (`"llm"` hoặc `"extractive_fallback"`) và `generation_model` (ID model nếu dùng LLM, hoặc `null` nếu là fallback).
 
 ---
 
 ## 1. Ma Trận Độc Lập Tuyệt Đối (Zero-Dependency Matrix)
+
+Sau khi hoàn thành CP0 (hoặc trong khi chờ sinh answers), cả 3 thành viên bước vào **3 Track song song 100%**:
 
 | Tiêu chí | Track 1 (Thành viên 1) | Track 2 (Thành viên 2) | Track 3 (Thành viên 3) |
 |---|---|---|---|
@@ -14,7 +65,7 @@
 | **File Unit Test riêng** | `tests/test_phase_a.py` | `tests/test_phase_b.py` | `tests/test_phase_c.py` |
 | **Lệnh Test độc lập** | `pytest tests/test_phase_a.py -q` | `pytest tests/test_phase_b.py -q` | `pytest tests/test_phase_c.py -q` |
 | **Lệnh Live Runner riêng** | `python scripts/run_experiments.py --phase a --live` | `python scripts/run_experiments.py --phase b --live` | `python scripts/run_experiments.py --phase c --live --latency-samples 20` |
-| **Nguồn dữ liệu đầu vào** | `artifacts/answers_50q.json` | `fixtures/human_labels_10q.json`<br>`fixtures/test_set_50q.json` | `fixtures/adversarial_20.json`<br>`fixtures/clean_set_8.json`<br>`fixtures/output_set_4.json` |
+| **Nguồn dữ liệu đầu vào** | `artifacts/answers_50q.json` | `fixtures/human_labels_10q.json`<br>`fixtures/test_set_50q.json`<br>*(5 cặp từ answers_50q)* | `fixtures/adversarial_20.json`<br>`fixtures/clean_set_8.json`<br>`fixtures/output_set_4.json` |
 | **Artifact JSON đầu ra** | `artifacts/ragas_50q.json` | `artifacts/judge_results.json` | `artifacts/guard_results.json` |
 | **Báo cáo Markdown riêng** | `doc/reports/failure_clusters.md` | `doc/reports/bias_report.md` | `doc/reports/blueprint.md` |
 | **Điểm mục tiêu** | **30đ** *(+4đ bonus)* | **35đ** *(+3đ bonus)* | **35đ** *(+3đ bonus)* |
@@ -26,18 +77,12 @@
 ### 🔵 TRACK 1: Thành viên 1 — RAG Evaluation & Failure Clusters (Phase A)
 *Bắt đầu ngay: Code hoàn toàn trong `src/phase_a_ragas.py`, test độc lập bằng `test_phase_a.py`.*
 
-1. **Chuẩn bị dữ liệu answers:**
-   - Đảm bảo 5 module `m1`–`m5` có trong `src/` và chạy lệnh tạo answers:
-     ```bash
-     python scripts/setup_answers.py --live
-     ```
-   - Xác nhận có `artifacts/answers_50q.json` (50 câu: 20 factual, 20 multi-hop, 10 adversarial).
-2. **Implement Tasks 1–4 trong `src/phase_a_ragas.py`:**
+1. **Implement Tasks 1–4 trong `src/phase_a_ragas.py`:**
    - `group_by_distribution(test_set)`: Chia đúng 20 factual, 20 multi-hop, 10 adversarial.
    - `run_ragas_50q(answers, m4_eval)`: Gọi `m4.evaluate_ragas`, trả về `RagasEvaluation` chứa 50 results với 4 metrics [0,1] và `evaluator_models`.
    - `bottom_10(results)`: Lấy 10 câu có `avg_score` thấp nhất, viết `diagnosis` và `suggested_fix` bám sát nội dung lỗi (retrieval thiếu/sai, hallucination, bẫy version).
-   - `cluster_analysis(results)`: Tạo ma trận phân bố lỗi; xác định nhóm yếu nhất bằng **mean `avg_score` thấp nhất**.
-3. **Kiểm thử & Báo cáo:**
+   - `cluster_analysis(results)`: Tạo ma trận phân bố lỗi; xác định nhóm yếu nhất bằng **mean `avg_score` thấp nhất** (không chọn theo tổng cột).
+2. **Kiểm thử & Báo cáo:**
    - Chạy test offline: `pytest tests/test_phase_a.py -q`
    - Chạy live batch: `python scripts/run_experiments.py --phase a --live`
    - Điền báo cáo [doc/reports/failure_clusters.md](file:///v:/K4-Track-3A-Day24-Eval-Guard/doc/reports/failure_clusters.md).
@@ -125,7 +170,26 @@ Mỗi thành viên làm việc trên một branch riêng hoặc commit trên t�
   - Merge cả 3 branches vào `main`. Vì không ai sửa chung bất kỳ file nào, **tỷ lệ conflict là 0%**!
   - Cả 3 cùng mở [doc/TEAM.md](file:///v:/K4-Track-3A-Day24-Eval-Guard/doc/TEAM.md) để điền phần `INDIVIDUAL` của mình.
   - Chạy lệnh kiểm tra tổng thể cuối cùng:
-    ```bash
-    python scripts/check_lab.py --with-tests
+    ```powershell
+    .\.venv\Scripts\python.exe scripts/check_lab.py --with-tests
     ```
   - Trưởng nhóm push commit cuối cùng và nộp link repo chung.
+
+---
+
+## 5. Checklist Trước Khi Nộp Bài
+
+- [ ] Không còn bất kỳ `# TODO` nào trong 3 file `src/phase_a_ragas.py`, `src/phase_b_judge.py`, `src/phase_c_guard.py`.
+- [ ] Toàn bộ unit tests vượt qua: `pytest tests/ -q`.
+- [ ] Có đầy đủ 4 file JSON trong thư mục `artifacts/`:
+  - `artifacts/answers_50q.json` (đúng 50 câu, 20/20/10, generation_mode & generation_model đầy đủ)
+  - `artifacts/ragas_50q.json` (đủ 4 metrics [0,1], evaluator_models từ m4)
+  - `artifacts/judge_results.json` (5 cặp pairwise swap, 10 binary judgments, Cohen's kappa)
+  - `artifacts/guard_results.json` (20 attacks, 8 clean controls, 4 outputs, >=20 latency samples)
+- [ ] Có đầy đủ 3 file báo cáo Markdown không còn placeholder `{{...}}`:
+  - `doc/reports/failure_clusters.md`
+  - `doc/reports/bias_report.md`
+  - `doc/reports/blueprint.md`
+- [ ] File `doc/TEAM.md` có đầy đủ thông tin thành viên, MSSV và 3 phần `INDIVIDUAL` riêng biệt.
+- [ ] Chạy lệnh kiểm tra vượt qua 100%: `python scripts/check_lab.py --with-tests`.
+- [ ] Lịch sử commit Git thể hiện rõ đóng góp của cả 3 người.
