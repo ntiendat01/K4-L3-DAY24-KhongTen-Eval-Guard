@@ -75,6 +75,9 @@ def evaluate_ragas(questions: list[str], answers: list[str],
             "context_precision": _safe_float(result.get("context_precision", 0.0)),
             "context_recall": _safe_float(result.get("context_recall", 0.0)),
             "per_question": per_question,
+            "metadata": {
+                "evaluator_models": ["gpt-4o-mini"]
+            },
         }
     except Exception as e:
         print(f"  ⚠️  RAGAS evaluation failed: {e}")
@@ -84,6 +87,9 @@ def evaluate_ragas(questions: list[str], answers: list[str],
             "context_precision": 0.0,
             "context_recall": 0.0,
             "per_question": [],
+            "metadata": {
+                "evaluator_models": ["gpt-4o-mini"]
+            },
         }
 
 

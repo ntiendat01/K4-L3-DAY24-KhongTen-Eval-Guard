@@ -5,9 +5,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# --- API Keys ---
+# --- API Keys & URLs ---
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", None)
 HF_TOKEN = os.getenv("HF_TOKEN", "")  # Optional: for HuggingFace models
+LLM_MODEL = os.getenv("LLM_MODEL", "gpt-4o-mini")
 
 # --- Qdrant (same as Day 18) ---
 QDRANT_HOST = "localhost"
