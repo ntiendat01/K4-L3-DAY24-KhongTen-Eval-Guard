@@ -1,6 +1,6 @@
 # Đánh giá LLM Judge Phase B
 
-Nhóm: K4-Track-3A-Day24
+Nhóm: Không Tên
 
 Người phụ trách: Nguyễn Tiến Đạt - 2A202602606
 
