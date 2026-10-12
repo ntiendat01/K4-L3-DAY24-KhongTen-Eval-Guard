@@ -1,12 +1,12 @@
 # Nhóm thực hiện K4 Track 3A
 
-Tên nhóm: {{Tên nhóm}}
+Tên nhóm: Không Tên
 
-Repo chung: {{Link repo}}
+Repo chung: https\://github.com/ntiendat01/K4-Track-3A-Day24-Eval-Guard
 
 Trưởng nhóm/người nộp: {{Họ tên và MSSV}}
 
-Ngày lab/deadline áp dụng: {{Ngày giờ theo thông báo lớp}} — Asia/Ho_Chi_Minh (UTC+07:00)
+Ngày lab/deadline áp dụng: {{Ngày giờ theo thông báo lớp}} — Asia/Ho\_Chi\_Minh (UTC+07:00)
 
 Commit dùng để chấm: {{Commit SHA}}
 
@@ -15,11 +15,11 @@ Thêm/xóa rows để khớp nhóm thật; mẫu ba rows không ép nhóm phải
 
 ## Thành viên và phân công
 
-| STT | Họ và tên | MSSV | Vai trò / công việc thật | Bằng chứng |
-|---|---|---|---|---|
-| 1 | {{Họ tên}} | {{MSSV}} | {{Phase/file/hàm}} | {{Commit/PR/report}} |
-| 2 | {{Họ tên}} | {{MSSV}} | {{Phase/file/hàm}} | {{Commit/PR/report}} |
-| 3 | {{Họ tên}} | {{MSSV}} | {{Phase/file/hàm}} | {{Commit/PR/report}} |
+| STT | Họ và tên       | MSSV        | Vai trò / công việc thật                                                                     | Bằng chứng           |
+| --- | --------------- | ----------- | -------------------------------------------------------------------------------------------- | -------------------- |
+| 1   | {{Họ tên}}      | {{MSSV}}    | {{Phase/file/hàm}}                                                                           | {{Commit/PR/report}} |
+| 2   | Nguyễn Tiến Đạt | 2A202602606 | *Phụ trách Phase B (LLM-as-Judge, Pairwise Swap-and-Average, Cohen's Kappa & Bias Analysis)* | PR-1                 |
+| 3   | {{Họ tên}}      | {{MSSV}}    | {{Phase/file/hàm}}                                                                           | {{Commit/PR/report}} |
 
 Người tích hợp/chạy batch/nộp link: {{Họ tên, công việc và bằng chứng}}.
 
