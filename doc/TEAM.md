@@ -2,11 +2,11 @@
 
 Tên nhóm: Không Tên
 
-Repo chung: https\://github.com/ntiendat01/K4-Track-3A-Day24-Eval-Guard
+Repo chung: https://github.com/ntiendat01/K4-Track-3A-Day24-Eval-Guard
 
-Trưởng nhóm/người nộp: {{Họ tên và MSSV}}
+Trưởng nhóm/người nộp: Nguyễn Tiến Đạt - 2A202602606
 
-Ngày lab/deadline áp dụng: {{Ngày giờ theo thông báo lớp}} — Asia/Ho\_Chi\_Minh (UTC+07:00)
+Ngày lab/deadline áp dụng: 2026-10-12 23:59 — Asia/Ho_Chi_Minh (UTC+07:00)
 
 Commit dùng để chấm: {{Commit SHA}}
 
@@ -19,15 +19,15 @@ Thêm/xóa rows để khớp nhóm thật; mẫu ba rows không ép nhóm phải
 | --- | --------------- | ----------- | -------------------------------------------------------------------------------------------- | -------------------- |
 | 1   | {{Họ tên}}      | {{MSSV}}    | {{Phase/file/hàm}}                                                                           | {{Commit/PR/report}} |
 | 2   | Nguyễn Tiến Đạt | 2A202602606 | *Phụ trách Phase B (LLM-as-Judge, Pairwise Swap-and-Average, Cohen's Kappa & Bias Analysis)* | PR-1                 |
-| 3   | {{Họ tên}}      | {{MSSV}}    | {{Phase/file/hàm}}                                                                           | {{Commit/PR/report}} |
+| 3 | Nguyễn Thu Trang | 2A202602435 | Phụ trách Phase C (Presidio PII, NeMo Guardrails, Benchmark Latency P95 & Blueprint CI/CD) | branch phase_c, artifacts/guard_results.json, doc/reports/blueprint.md |
 
 Người tích hợp/chạy batch/nộp link: {{Họ tên, công việc và bằng chứng}}.
 
 ## Môi trường và chuẩn bị trước lớp
 
-OS/Python/compiler: {{Phiên bản thực tế}}.
-Virtualenv/dependencies/imports: {{Lệnh và kết quả}}.
-Models/Qdrant/50 answers đã chuẩn bị: {{Bằng chứng và giới hạn/fallback}}.
+OS/Python/compiler: macOS / Windows 11, Python 3.11.16, Apple Clang / MSVC C++ Build Tools.
+Virtualenv/dependencies/imports: Tạo .venv với Python 3.11, cài đặt pyarrow<18 tương thích numpy 1.26.4, đã kiểm tra lệnh python -c "import ragas, nemoguardrails, presidio_analyzer, spacy; print('imports OK')" thành công.
+Models/Qdrant/50 answers đã chuẩn bị: Tải mô hình spaCy en_core_web_lg, tải all-MiniLM-L6-v2 cho NeMo Guardrails, chạy Qdrant Docker v1.9.7 và sinh đầy đủ 50 câu trả lời RAG trong artifacts/answers_50q.json.
 Nếu cài full NeMo chưa thành công, ghi lỗi thực tế; không dùng unit test pass
 hoặc pip resolve để khẳng định runtime đã chạy.
 
@@ -46,5 +46,4 @@ Sao chép mẫu cho mỗi thành viên; tiêu đề họ tên không dấu-MSSV.
 
 ## Cập nhật sau khi nộp
 
-{{Ghi phiên bản nộp; nếu sửa sau deadline, ghi commit/thời điểm/lý do và thông báo
-coach cho phép áp dụng bản cập nhật. Nếu không có cập nhật, ghi rõ không có.}}
+Bản nộp chính thức đúng hạn ngày 12/10/2026; không có cập nhật chỉnh sửa sau deadline.

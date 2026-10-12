@@ -49,6 +49,9 @@ def setup_presidio():
     return analyzer, anonymizer
 
 
+TARGET_PII_ENTITIES = {"VN_CCCD", "VN_PHONE", "EMAIL_ADDRESS", "PHONE_NUMBER"}
+
+
 def pii_scan(text: str, analyzer=None, anonymizer=None) -> dict:
     """Task 9a: Quét PII trong văn bản bằng Presidio.
 
@@ -63,6 +66,7 @@ def pii_scan(text: str, analyzer=None, anonymizer=None) -> dict:
         analyzer, anonymizer = setup_presidio()
 
     results = analyzer.analyze(text=text, language=PRESIDIO_LANGUAGE)
+    results = [r for r in results if r.entity_type in TARGET_PII_ENTITIES]
     if not results:
         return {"has_pii": False, "entities": [], "anonymized": text}
 
