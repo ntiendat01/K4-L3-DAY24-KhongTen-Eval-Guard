@@ -10,7 +10,7 @@
         "gpt-4o-mini"
       ]
     },
-    "created_at": "2026-10-12T10:13:30.859933+00:00",
+    "created_at": "2026-10-12T10:48:13.941183+00:00",
     "source_sha256": {
       "adversarial_set_20.json": "c2ac1c7ed29fafd8b02784a76a186c90c32312db0592978c784c780813ae4b02",
       "clean_set_8.json": "6e174f0052baedc21c3d3f268633e3636b38fa6fd02d76b4e4e615e6a59b1ba8",
@@ -333,121 +333,121 @@
     "warmup_runs": 2,
     "samples": [
       {
-        "presidio_ms": 12.598542001796886,
-        "nemo_input_ms": 705.1834170124494,
-        "input_guard_ms": 717.7819590142462
+        "presidio_ms": 12.715249991742894,
+        "nemo_input_ms": 946.6595419798978,
+        "input_guard_ms": 959.3747919716407
       },
       {
-        "presidio_ms": 8.521666983142495,
-        "nemo_input_ms": 675.1632919767871,
-        "input_guard_ms": 683.6849589599296
+        "presidio_ms": 6.7993749980814755,
+        "nemo_input_ms": 785.3899170004297,
+        "input_guard_ms": 792.1892919985112
       },
       {
-        "presidio_ms": 7.129874982638285,
-        "nemo_input_ms": 672.761084017111,
-        "input_guard_ms": 679.8909589997493
+        "presidio_ms": 12.376541999401525,
+        "nemo_input_ms": 735.4165829892736,
+        "input_guard_ms": 747.7931249886751
       },
       {
-        "presidio_ms": 12.003833980998024,
-        "nemo_input_ms": 774.2077499860898,
-        "input_guard_ms": 786.2115839670878
+        "presidio_ms": 11.981582996668294,
+        "nemo_input_ms": 905.7582920067944,
+        "input_guard_ms": 917.7398750034627
       },
       {
-        "presidio_ms": 5.920374998822808,
-        "nemo_input_ms": 920.9424589935225,
-        "input_guard_ms": 926.8628339923453
+        "presidio_ms": 6.288083008257672,
+        "nemo_input_ms": 726.8330000224523,
+        "input_guard_ms": 733.12108303071
       },
       {
-        "presidio_ms": 11.957540991716087,
-        "nemo_input_ms": 801.8253330083098,
-        "input_guard_ms": 813.7828740000259
+        "presidio_ms": 11.682624986860901,
+        "nemo_input_ms": 789.8660830105655,
+        "input_guard_ms": 801.5487079974264
       },
       {
-        "presidio_ms": 12.692667020019144,
-        "nemo_input_ms": 1324.5465000218246,
-        "input_guard_ms": 1337.2391670418438
+        "presidio_ms": 7.287125015864149,
+        "nemo_input_ms": 669.7512909886427,
+        "input_guard_ms": 677.0384160045069
       },
       {
-        "presidio_ms": 10.865666001336649,
-        "nemo_input_ms": 911.6249590006191,
-        "input_guard_ms": 922.4906250019558
+        "presidio_ms": 5.4890839965082705,
+        "nemo_input_ms": 856.8754580046516,
+        "input_guard_ms": 862.3645420011599
       },
       {
-        "presidio_ms": 12.32345899916254,
-        "nemo_input_ms": 904.7703749965876,
-        "input_guard_ms": 917.0938339957502
+        "presidio_ms": 7.761999993817881,
+        "nemo_input_ms": 669.8497500037774,
+        "input_guard_ms": 677.6117499975953
       },
       {
-        "presidio_ms": 9.559792000800371,
-        "nemo_input_ms": 794.462082994869,
-        "input_guard_ms": 804.0218749956694
+        "presidio_ms": 13.753625011304393,
+        "nemo_input_ms": 768.1350839848164,
+        "input_guard_ms": 781.8887089961208
       },
       {
-        "presidio_ms": 8.534167020116001,
-        "nemo_input_ms": 790.6652080127969,
-        "input_guard_ms": 799.1993750329129
+        "presidio_ms": 10.326040996005759,
+        "nemo_input_ms": 991.5944170206785,
+        "input_guard_ms": 1001.9204580166843
       },
       {
-        "presidio_ms": 8.79604197689332,
-        "nemo_input_ms": 848.141708993353,
-        "input_guard_ms": 856.9377509702463
+        "presidio_ms": 11.934083013329655,
+        "nemo_input_ms": 908.9632499963045,
+        "input_guard_ms": 920.8973330096342
       },
       {
-        "presidio_ms": 14.404332992853597,
-        "nemo_input_ms": 728.1353329890408,
-        "input_guard_ms": 742.5396659818944
+        "presidio_ms": 11.90979199600406,
+        "nemo_input_ms": 908.4287080040667,
+        "input_guard_ms": 920.3385000000708
       },
       {
-        "presidio_ms": 6.640582985710353,
-        "nemo_input_ms": 791.5164580044802,
-        "input_guard_ms": 798.1570409901906
+        "presidio_ms": 11.546583991730586,
+        "nemo_input_ms": 759.7288750112057,
+        "input_guard_ms": 771.2754590029363
       },
       {
-        "presidio_ms": 12.900958012323827,
-        "nemo_input_ms": 903.546291985549,
-        "input_guard_ms": 916.4472499978729
+        "presidio_ms": 11.754417006159201,
+        "nemo_input_ms": 1062.5074580020737,
+        "input_guard_ms": 1074.261875008233
       },
       {
-        "presidio_ms": 11.151874990900978,
-        "nemo_input_ms": 870.7195419992786,
-        "input_guard_ms": 881.8714169901796
+        "presidio_ms": 10.881207999773324,
+        "nemo_input_ms": 869.3629579793196,
+        "input_guard_ms": 880.2441659790929
       },
       {
-        "presidio_ms": 13.004458014620468,
-        "nemo_input_ms": 1594.8408329859376,
-        "input_guard_ms": 1607.845291000558
+        "presidio_ms": 15.645667008357123,
+        "nemo_input_ms": 657.819665997522,
+        "input_guard_ms": 673.4653330058791
       },
       {
-        "presidio_ms": 14.017749985214323,
-        "nemo_input_ms": 689.5502079860307,
-        "input_guard_ms": 703.567957971245
+        "presidio_ms": 9.78525000391528,
+        "nemo_input_ms": 892.7828329906333,
+        "input_guard_ms": 902.5680829945486
       },
       {
-        "presidio_ms": 10.789457999635488,
-        "nemo_input_ms": 791.5283339971211,
-        "input_guard_ms": 802.3177919967566
+        "presidio_ms": 10.316917003365234,
+        "nemo_input_ms": 839.9562090053223,
+        "input_guard_ms": 850.2731260086875
       },
       {
-        "presidio_ms": 12.000374990748242,
-        "nemo_input_ms": 909.197665983811,
-        "input_guard_ms": 921.1980409745593
+        "presidio_ms": 11.806416005128995,
+        "nemo_input_ms": 685.4715420049615,
+        "input_guard_ms": 697.2779580100905
       }
     ],
     "budget_ms": 500,
     "presidio_ms": {
-      "p50": 11.554708,
-      "p95": 14.037079,
-      "p99": 14.330882
+      "p50": 11.614604,
+      "p95": 13.848227,
+      "p99": 15.286179
     },
     "nemo_input_ms": {
-      "p50": 798.143708,
-      "p95": 1338.061217,
-      "p99": 1543.48491
+      "p50": 814.911146,
+      "p95": 995.140069,
+      "p99": 1049.03398
     },
     "input_guard_ms": {
-      "p50": 808.902374,
-      "p95": 1350.769473,
-      "p99": 1556.430127
+      "p50": 825.910917,
+      "p95": 1005.537529,
+      "p99": 1060.517006
     },
     "latency_budget_ok": false
   }

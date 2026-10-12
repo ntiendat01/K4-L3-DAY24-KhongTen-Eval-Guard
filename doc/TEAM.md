@@ -19,7 +19,7 @@ Thêm/xóa rows để khớp nhóm thật; mẫu ba rows không ép nhóm phải
 | --- | --------------- | ----------- | -------------------------------------------------------------------------------------------- | -------------------- |
 | 1   | {{Họ tên}}      | {{MSSV}}    | {{Phase/file/hàm}}                                                                           | {{Commit/PR/report}} |
 | 2   | Nguyễn Tiến Đạt | 2A202602606 | *Phụ trách Phase B (LLM-as-Judge, Pairwise Swap-and-Average, Cohen's Kappa & Bias Analysis)* | PR-1                 |
-| 3 | Nguyễn Thu Trang | 2A202602435 | Phụ trách Phase C (Presidio PII, NeMo Guardrails, Benchmark Latency P95 & Blueprint CI/CD) | Commit aef06bc, PR-3 (branch phase_c), artifacts/guard_results.json, doc/reports/blueprint.md |
+| 3 | Nguyễn Thu Trang | 2A202602435 | Phụ trách Phase C (Presidio PII, NeMo Guardrails, Benchmark Latency P95 & Blueprint CI/CD) | PR-3 (branch phase_c), artifacts/guard_results.json, doc/reports/blueprint.md |
 
 Người tích hợp/chạy batch/nộp link: {{Họ tên, công việc và bằng chứng}}.
 
@@ -50,7 +50,7 @@ Sao chép mẫu cho mỗi thành viên; tiêu đề họ tên không dấu-MSSV.
 - Bằng chứng: Commit aef06bc ("feat(phase-c): implement guardrails stack, p95 benchmark and blueprint report (2A202602435)"), Commit c49a42e ("hoàn thiện src/phase_c_guard.py"), Pull Request PR-3 (nhánh phase_c -> main), file kết quả thực nghiệm live artifacts/guard_results.json (20/20 attacks blocked, 8/8 clean allowed, 4/4 outputs đúng), code sạch không TODO trong src/phase_c_guard.py, guardrails/config.yml và báo cáo doc/reports/blueprint.md.
 - Cách kiểm tra: Chạy pytest tests/test_phase_c.py -v (12/12 pass) và chạy thực nghiệm trực tiếp python scripts/run_experiments.py --phase c --live --latency-samples 20 đạt 28/28 passed (100%).
 - Điều đã học: Nắm vững kiến trúc bảo vệ đa tầng trong hệ thống RAG doanh nghiệp, cách thiết lập Colang 1.0 và cơ chế tự kiểm tra của NeMo Guardrails, phương pháp đo độ trễ P95/P99 theo nội suy tuyến tính, và cách thiết lập các quality gates trong CI/CD.
-- Giới hạn/cách xử lý: Ban đầu mô hình spaCy tiếng Anh nhận diện nhầm văn bản tiếng Việt thành PERSON gây chặn nhầm câu sạch (false positive); đã giải quyết triệt để bằng cách lọc đúng tập thực thể mục tiêu TARGET_PII_ENTITIES, đưa tỷ lệ false positive về 0.0%. Tinh chỉnh prompt trong guardrails/config.yml để phân biệt câu hỏi chính sách mật khẩu hợp lệ với yêu cầu lấy mật khẩu admin.
+- Giới hạn/cách xử lý: Ban đầu mô hình spaCy tiếng Anh nhận diện nhầm văn bản tiếng Việt thành PERSON gây chặn nhầm câu sạch (false positive); đã giải quyết triệt để bằng cách lọc đúng tập thực thể mục tiêu TARGET_PII_ENTITIES, đưa tỷ lệ false positive về 0.0%. Xử lý prompt trong NeMo Guardrails để phân biệt câu hỏi chính sách mật khẩu hợp lệ với yêu cầu lấy mật khẩu admin.
 - Nguồn/AI hỗ trợ nếu có: Sử dụng Antigravity hỗ trợ phân tích traceback môi trường, gỡ lỗi nhận diện thực thể PII và tối ưu prompt; toàn bộ code và kết quả đo đạc đều được tự chạy và kiểm chứng 100% qua pytest và check_lab.py.
 
 ## Cập nhật sau khi nộp

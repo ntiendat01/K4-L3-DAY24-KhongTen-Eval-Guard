@@ -6,7 +6,7 @@ Người phụ trách: Nguyễn Thu Trang - 2A202602435
 
 Đây là **đề xuất CI/CD**, không phải workflow đã được triển khai/chạy.
 Nguồn kết quả: artifacts/ragas_50q.json, judge_results.json, guard_results.json.
-Run timestamp: 2026-10-12T10:13:30.859933+00:00; guard models: ['gpt-4o-mini'].
+Run timestamp: 2026-10-12T10:48:13.941183+00:00; guard models: ['gpt-4o-mini'].
 Models generation/evaluator/judge từ A/B: Generation: gpt-4o-mini-2024-07-18; Judge: gpt-4o-mini; Guard: gpt-4o-mini.
 
 ## Kiến trúc và failure action
@@ -33,15 +33,15 @@ phương pháp: linear.
 
 | Layer / scope | P50 ms | P95 ms | P99 ms | Tình trạng |
 |---|---|---|---|---|
-| Presidio | 11.55 | 14.04 | 14.33 | Đạt ngân sách (xử lý regex nội bộ cực nhanh) |
-| NeMo input | 798.14 | 1338.06 | 1543.48 | Vượt ngân sách (phụ thuộc độ trễ mạng OpenAI API) |
-| Input guard sequential | 808.90 | 1350.77 | 1556.43 | Vượt ngân sách 500ms (bottleneck tại NeMo input) |
+| Presidio | 11.61 | 13.85 | 15.29 | Đạt ngân sách (xử lý regex nội bộ cực nhanh) |
+| NeMo input | 814.91 | 995.14 | 1049.03 | Vượt ngân sách (phụ thuộc độ trễ mạng OpenAI API) |
+| Input guard sequential | 825.91 | 1005.54 | 1060.52 | Vượt ngân sách 500ms (bottleneck tại NeMo input) |
 | RAG | chưa đo | chưa đo | chưa đo | Ngoài phạm vi bắt buộc |
 | NeMo output | chưa đo | chưa đo | chưa đo | Ngoài phạm vi bắt buộc |
 | Full guard / short-circuit request | chưa đo | chưa đo | chưa đo | Không suy từ input_guard_ms |
 
-Input-layer budget target: 500ms; kết quả thực tế/budget_ok: 1350.77ms và False.
-Phân tích bottleneck: Điểm nghẽn độ trễ lớn nhất tập trung hoàn toàn tại NeMo Input Guardrail (P95 đạt 1338.06ms) do phải thực hiện lời gọi mạng tới API OpenAI (mô hình gpt-4o-mini). Ngược lại, tầng Presidio chạy cục bộ có độ trễ cực thấp (P95 chỉ 14.04ms). Do đó tổng độ trễ tuần tự hai tầng đầu vào (Input guard sequential P95 = 1350.77ms) chưa đạt mục tiêu 500ms.
+Input-layer budget target: 500ms; kết quả thực tế/budget_ok: 1005.54ms và False.
+Phân tích bottleneck: Điểm nghẽn độ trễ lớn nhất tập trung hoàn toàn tại NeMo Input Guardrail (P95 đạt 995.14ms) do phải thực hiện lời gọi mạng tới API OpenAI (mô hình gpt-4o-mini). Ngược lại, tầng Presidio chạy cục bộ có độ trễ cực thấp (P95 chỉ 13.85ms). Do đó tổng độ trễ tuần tự hai tầng đầu vào (Input guard sequential P95 = 1005.54ms) chưa đạt mục tiêu 500ms.
 Các phạm vi RAG, NeMo output và Full guard được ghi nhận "chưa đo" vì nằm ngoài yêu cầu bắt buộc của Task 12. Kế hoạch đo lường mở rộng trong tương lai sẽ thực hiện bằng cách đo end-to-end với ít nhất 50 mẫu sau 2 vòng warm-up, ghi nhận timestamp chi tiết từng chặng.
 
 ## CI gates đề xuất
@@ -70,7 +70,7 @@ Cohen’s κ: 1.0 (hoàn toàn đồng thuận giữa LLM Judge và nhãn con ng
 Attacks passed: 20/20; clean false_positive_rate: 0.0 (đạt 8/8 câu sạch được cho qua).
 
 Các hành động cải tiến hệ thống dựa trên bằng chứng thực nghiệm:
-1. Thay thế lời gọi OpenAI API trong NeMo input guard bằng mô hình phân loại nội bộ nhỏ gọn (như DistilBERT hoặc ModernBERT ONNX) để đưa P95 latency từ 1350.77ms xuống dưới 80ms.
+1. Thay thế lời gọi OpenAI API trong NeMo input guard bằng mô hình phân loại nội bộ nhỏ gọn (như DistilBERT hoặc ModernBERT ONNX) để đưa P95 latency từ 1005.54ms xuống dưới 80ms.
 2. Triển khai bộ nhớ đệm ngữ nghĩa (Semantic Cache với Redis/Qdrant) cho các câu hỏi phổ biến, cho phép bỏ qua bước kiểm tra lặp lại đối với các truy vấn an toàn đã biết.
 3. Tối ưu hóa tập regex cho Presidio và bổ sung quy tắc nhận diện mã số thuế doanh nghiệp và số thẻ bảo hiểm y tế Việt Nam.
 4. Tinh chỉnh ngưỡng từ chối của NeMo input guard đối với các câu hỏi về IT chính sách mật khẩu để đảm bảo không bao giờ chặn nhầm câu hỏi chính sách hợp lệ.
